@@ -18,7 +18,6 @@ router.post('/users/login', [
       .withMessage('You must supply a password')
 ],
 validateRequest, async (req: Request, res: Response) => {
-  console.log('Sign in')
   const { email, password } = req.body;
   const existingUser = await User.findOne({ email });
   if (!existingUser) {

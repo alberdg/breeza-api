@@ -41,8 +41,7 @@ router.post('/users/signup', checkSchema({
   },
   typeOfUser: {
     in: [ 'body' ],
-    errorMessage: 'Address cannot be empty',
-    notEmpty: true,
+    errorMessage: 'Type of user cannot be empty',
     isInt: true
   },
   profession: {

@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "ts-node-dev ./src/index.ts",
-    "test": "jest --passWithNoTests"
+    "test": "jest --watchAll --passWithNoTests"
   },
   "jest": {
     "preset": "ts-jest",

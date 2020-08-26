@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-mongoose.set('debug', true);
 import { Password } from '../services/password';
 
 interface UserAttrs {

@@ -4,11 +4,13 @@ import { json } from 'body-parser';
 import { errorHandler } from './middlewares/error-handler';
 import { signupRouter } from './routes/signup';
 import { signinRouter } from './routes/signin';
+import { getAllSellersRouter } from './routes/get-all-sellers';
 
 const app = express();
 app.use(json());
 app.use(signupRouter);
 app.use(signinRouter);
+app.use(getAllSellersRouter);
 app.use(errorHandler);
 
 export default app;

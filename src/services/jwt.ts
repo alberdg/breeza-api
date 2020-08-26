@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Request } from 'express';
 import { Password } from './password';
 
-export default class JWT {
+export class JWT {
 
   /**
    * Signs JSON Web token for the given user and stores it in the session

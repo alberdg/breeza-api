@@ -79,6 +79,10 @@ validateRequest, async (req: Request, res: Response) => {
   if (existingUser) {
     throw new BadRequestError('Email is in use');
   }
+  const location = {
+    type: 'Point',
+    coordinates: [ longitude, latitude ]
+  };
   // Use factory to build a new user document
   const user = User.build({
     email,
@@ -89,9 +93,8 @@ validateRequest, async (req: Request, res: Response) => {
     address,
     typeOfUser,
     profession,
-    longitude,
-    latitude
-   });
+    location
+    });
   await user.save();
 
 

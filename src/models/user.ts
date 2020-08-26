@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
+mongoose.set('debug', true);
 import { Password } from '../services/password';
-
-// An interface describing the properties to create a new user
 
 interface UserAttrs {
   email: string,
@@ -12,14 +11,14 @@ interface UserAttrs {
   address: string,
   typeOfUser: string,
   profession: string,
-  longitude: string,
-  latitude: string,
+  location: any,
 };
 
 // An interface that describes the properties a user model has
 interface UserModel extends mongoose.Model<UserDoc> {
   build (attrs: UserAttrs): any;
   transform (user: any): any;
+  transformMany (user: []): [];
 };
 
 
@@ -33,8 +32,7 @@ interface UserDoc extends mongoose.Document {
   address: string,
   typeOfUser: string,
   profession: string,
-  longitude: string,
-  latitude: string,
+  location: any,
 };
 
 const userSchema = new mongoose.Schema({
@@ -70,15 +68,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  latitude: {
-    type: String,
-    required: true
-  },
-  longitude: {
-    type: String,
-    required: true
+  location: {
+    type: { type: String },
+    coordinates: [Number]
   }
 });
+
+userSchema.index({ location: "2dsphere" });
 
 // Not using arrow function because we don't want to override the user this value
 userSchema.pre('save', async function (done) {
@@ -93,14 +89,28 @@ userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 }
 
-userSchema.statics.transform = (user: UserDoc) => {
+/**
+ * Transforms user document to desired result
+ * @function
+ * @param { UserDoc } user User document
+ * @returns { Object } user Expected user document
+ * */
+const transform = (user: UserDoc) => {
   let ret = user.toObject();
   ret.id = user._id;
   delete ret._id;
   delete ret.password;
   delete ret.__v;
+  ret.longitude = ret.location?.coordinates[0];
+  ret.latitude = ret.location?.coordinates[1];
+  delete ret.location;
   return ret;
-}
+};
+
+userSchema.statics.transform = transform;
+
+userSchema.statics.transformMany = (users: any) => users.map((user: any) => transform(user));
+
 
 const User = mongoose.model<UserDoc, UserModel>('user', userSchema);
 

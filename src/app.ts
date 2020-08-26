@@ -7,7 +7,7 @@ import { signupRouter } from './routes/signup';
 import { signinRouter } from './routes/signin';
 import { getAllSellersRouter } from './routes/get-all-sellers';
 import { postReviewRouter  } from './routes/post-review';
-
+import { getSellerReviewsRouter } from './routes/get-seller-reviews';
 const app = express();
 app.use(json());
 app.use(cookieSession({
@@ -20,4 +20,5 @@ app.use(signinRouter);
 app.use(getAllSellersRouter);
 app.use(errorHandler);
 app.use(postReviewRouter);
+app.use(getSellerReviewsRouter);
 export default app;
